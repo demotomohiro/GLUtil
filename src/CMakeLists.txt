@@ -1,12 +1,13 @@
 find_package(GLEW REQUIRED)
+find_package(OpenGL REQUIRED)
 
 add_library(shader SHARED shader.cpp)
-target_link_libraries(shader GLEW::GLEW)
+target_link_libraries(shader GLEW::GLEW OpenGL::GL)
 target_enable_warning(shader)
 export_library(shader)
 
 add_library(contextUtil SHARED contextUtil.cpp)
-target_link_libraries(contextUtil GLEW::GLEW)
+target_link_libraries(contextUtil GLEW::GLEW OpenGL::GL)
 set_target_properties(contextUtil PROPERTIES CXX_STANDARD 11)
 set_target_properties(contextUtil PROPERTIES CXX_STANDARD_REQUIRED ON)
 target_enable_warning(contextUtil)
