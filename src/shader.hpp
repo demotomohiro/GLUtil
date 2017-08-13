@@ -8,7 +8,7 @@ namespace GLUtil {
 class SHADER_EXPORT scoped_shader {
 public:
 
-    scoped_shader(GLuint shader=0);
+    scoped_shader(GLuint src=0);
 
     ~scoped_shader() {
         delete_shader();
@@ -18,7 +18,7 @@ public:
         return shader;
     }
 
-    void operator=(GLuint shader);
+    void operator=(GLuint src);
 
     bool operator!() const {
         return this->shader == 0;
@@ -34,7 +34,7 @@ private:
 class SHADER_EXPORT scoped_program {
 public:
 
-    scoped_program(GLuint program=0);
+    scoped_program(GLuint src=0);
 
     ~scoped_program();
 
@@ -42,7 +42,7 @@ public:
         return program;
     }
 
-    scoped_program& operator = (GLuint program);
+    scoped_program& operator = (GLuint src);
 
 private:
 

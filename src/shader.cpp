@@ -8,35 +8,35 @@
 using namespace std;
 using namespace GLUtil;
 
-scoped_shader::scoped_shader(GLuint shader):shader(shader) {
+scoped_shader::scoped_shader(GLuint src):shader(src) {
     assert(glIsShader(shader) == GL_TRUE || shader == 0);
 }
 
-void scoped_shader::operator=(GLuint shader) {
-    if(this->shader == shader)
+void scoped_shader::operator=(GLuint src) {
+    if(shader == src)
         return;
 
     delete_shader();
-    this->shader = shader;
+    shader = src;
 }
 
 void scoped_shader::delete_shader() {
     glDeleteShader(shader);
 }
 
-scoped_program::scoped_program(GLuint program):program(program) {
+scoped_program::scoped_program(GLuint src):program(src) {
     assert(glIsProgram(program) || program == 0);
 }
 
-scoped_program& scoped_program::operator = (GLuint program) {
-    assert(glIsProgram(program) == GL_TRUE || program == 0);
+scoped_program& scoped_program::operator = (GLuint src) {
+    assert(glIsProgram(src) == GL_TRUE || src == 0);
     assert(glIsProgram(this->program) == GL_TRUE || this->program == 0);
 
-    if(this->program == program)
+    if(program == src)
         return *this;
 
-    glDeleteProgram(this->program);
-    this->program = program;
+    glDeleteProgram(program);
+    program = src;
 
     return *this;
 }
