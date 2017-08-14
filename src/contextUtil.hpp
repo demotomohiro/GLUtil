@@ -23,8 +23,8 @@ void CONTEXTUTIL_EXPORT enable_debug_message_cerr_out_if_available();
 #ifndef DISABLE_REDEFINING_GLEW_GET_FUN
 #ifndef NDEBUG
 #   undef GLEW_GET_FUN
-#   define GLEW_GET_FUN(x)  (set_last_gl_call(__FILE__, __LINE__, #x), x)
-#   define GL_CALL(x)       (set_last_gl_call(__FILE__, __LINE__, #x), x)
+#   define GLEW_GET_FUN(x)  (GLUtil::set_last_gl_call(__FILE__, __LINE__, #x), x)
+#   define GL_CALL(x)       (GLUtil::set_last_gl_call(__FILE__, __LINE__, #x), x)
 #else
 #   define GL_CALL(x)       x
 #endif
