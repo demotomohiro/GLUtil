@@ -8,6 +8,13 @@
 using namespace std;
 using namespace GLUtil;
 
+namespace {
+const char* gl_get_string(GLenum name) {
+    const char* p = reinterpret_cast<const char*>(glGetString(name));
+    return p ? p : "(Error! glGetString returned 0)";
+}
+}
+
 string GLUtil::get_context_info_text() {
     GLint contextProfileMask;
     glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &contextProfileMask);
@@ -28,13 +35,13 @@ string GLUtil::get_context_info_text() {
     ostringstream oss;
     oss <<
         "GL_VERSION:\n\t" <<
-        reinterpret_cast<const char*>(glGetString(GL_VERSION)) <<
+        gl_get_string(GL_VERSION) <<
         "\nGL_SHADING_LANGUAGE_VERSION:\n\t" <<
-        reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)) <<
+        gl_get_string(GL_SHADING_LANGUAGE_VERSION) <<
         "\nGL_RENDERER:\n\t" <<
-        reinterpret_cast<const char*>(glGetString(GL_RENDERER)) <<
+        gl_get_string(GL_RENDERER) <<
         "\nGL_VENDOR:\n\t" <<
-        reinterpret_cast<const char*>(glGetString(GL_VENDOR)) <<
+        gl_get_string(GL_VENDOR) <<
         "\nGL_CONTEXT_PROFILE_MASK:\n\t" <<
         contextProfileMaskStr   <<
         "\nGL_CONTEXT_FLAGS:\n\t" <<
