@@ -35,13 +35,6 @@
 
 #include "custom_directives.hpp"
 
-//0にすると#lineを出力しない.
-//#lineが無いと#includeしているソースコードでエラーが起きても,
-//エラーメッセージの行とファイル内での行が一致しない.
-#ifndef TOFU_OPENGL_GLSL_PREPROCESSOR_ENABLE_EMIT_LINE_DIRECTIVES
-#define TOFU_OPENGL_GLSL_PREPROCESSOR_ENABLE_EMIT_LINE_DIRECTIVES 0
-#endif
-
 namespace tofu
 {
 namespace glsl
@@ -56,7 +49,10 @@ namespace glsl
 //  conditional block which were not evaluated because the corresponding 
 //  condition was false. These tokens are commented out as well. 
 //
-inline std::string glsl_preprocessor(const std::string& source, bool& status, std::initializer_list<std::string> include_paths, const std::vector<std::string>& macro_definitions)
+//enable_emit_line_directivesをfalseにすると#lineを出力しない.
+//#lineが無いと#includeしているソースコードでエラーが起きても,
+//エラーメッセージの行とファイル内での行が一致しない.
+inline std::string glsl_preprocessor(const std::string& source, bool& status, std::initializer_list<std::string> include_paths, const std::vector<std::string>& macro_definitions, bool enable_emit_line_directives)
 {
 	std::ostringstream out;
 	std::string instring = source;
@@ -95,10 +91,10 @@ inline std::string glsl_preprocessor(const std::string& source, bool& status, st
         ctx.set_language(boost::wave::enable_long_long(ctx.get_language()));
         ctx.set_language(boost::wave::enable_preserve_comments(ctx.get_language()));
         ctx.set_language(boost::wave::enable_prefer_pp_numbers(ctx.get_language()));
-#if TOFU_OPENGL_GLSL_PREPROCESSOR_ENABLE_EMIT_LINE_DIRECTIVES
-#else
-        ctx.set_language(boost::wave::enable_emit_line_directives(ctx.get_language(), false));
-#endif
+        if(!enable_emit_line_directives) {
+            ctx.set_language(boost::wave::enable_emit_line_directives(ctx.get_language(), false));
+        }
+
         for(const auto& inc : include_paths) {
             ctx.add_include_path(inc.c_str());
         }

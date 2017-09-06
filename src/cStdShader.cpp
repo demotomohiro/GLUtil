@@ -1,7 +1,6 @@
 ﻿#include <GL/glew.h>
 #include "cStdShader.hpp"
 #include "shader.hpp"
-#define TOFU_OPENGL_GLSL_PREPROCESSOR_ENABLE_EMIT_LINE_DIRECTIVES 1
 #include "glsl_preprocessor.hpp"
 
 #ifdef _MSC_VER
@@ -20,7 +19,7 @@
 using namespace GLUtil;
 using namespace std;
 
-GLuint GLUtil::load_shader(GLenum type, const std::string& source, bool& status, const std::vector<std::string>& macro_definitions) {
+GLuint GLUtil::load_shader(GLenum type, const std::string& source, bool& status, const std::vector<std::string>& macro_definitions, bool enable_emit_line_directives) {
     status = false;
 
     cout << "Loading " << (
@@ -31,7 +30,7 @@ GLuint GLUtil::load_shader(GLenum type, const std::string& source, bool& status,
         <<
         " shader ... ";
 
-    const string pp_source = tofu::glsl::glsl_preprocessor(source, status, {"../shaders/include", "."}, macro_definitions);
+    const string pp_source = tofu::glsl::glsl_preprocessor(source, status, {"../shaders/include", "."}, macro_definitions, enable_emit_line_directives);
     if(!status)
         return 0;
 
@@ -52,7 +51,7 @@ GLuint GLUtil::load_shader(GLenum type, const std::string& source, bool& status,
     return shader;
 }
 
-GLuint GLUtil::load_shader_from_file(GLenum type, const std::string& file, bool& status, const std::vector<std::string>& macro_definitions) {
+GLuint GLUtil::load_shader_from_file(GLenum type, const std::string& file, bool& status, const std::vector<std::string>& macro_definitions, bool enable_emit_line_directives) {
     status = false;
     string source;
 
@@ -72,7 +71,7 @@ GLuint GLUtil::load_shader_from_file(GLenum type, const std::string& file, bool&
         getline(cin, source, '\0');
     }
 
-    return GLUtil::load_shader(type, source, status, macro_definitions);
+    return GLUtil::load_shader(type, source, status, macro_definitions, enable_emit_line_directives);
 }
 
 GLuint GLUtil::link_program(GLuint vert_shader, GLuint frag_shader, bool& status) {
